@@ -10,8 +10,14 @@ NAME_MAP = {
     '31hbrww3peprl3puzzaqqf6yfycy': 'Cas',
     'carmenvs': 'Carmen',
     '11140450740': 'Bryan',
-
+    'hankmoody420': 'Han'
 }
+def map_user_names(name):
+    if name in NAME_MAP:
+        return NAME_MAP[name]
+    else:
+        return name
+
 
 FEATURE_GRAPH_MAP = {
     'duur' : {
@@ -69,15 +75,17 @@ FEATURE_GRAPH_MAP = {
 }
 
 df = pd.read_csv('data/tracks.csv')
-df['user'] = df['user'].map(NAME_MAP)
+df['user'] = df['user'].map(map_user_names)
 df['duration_min'] = df['duration'].apply(lambda x: x / 60)
 df['artists'] = df['artists'].apply(lambda x: [a.strip() for a in x[1:-1].replace("'", '').replace('"', '').split(',')])
 df['popularity'] = df['popularity'].astype(float)
 
 st.set_page_config(page_title='🎵 Playlist', layout='wide')
-st.title('🦄🏄‍♂️Unicornication 2022🏄‍♀️🦄')
-st.sidebar.image('unicorn.png')
 
+st.title('🏄‍♂️ Unicornication 2022 🏄‍♀️')
+
+
+st.sidebar.image('unicorn.png')
 selected_user = st.sidebar.multiselect('Selecteer gebruiker', df['user'].unique(), default=df['user'].unique())
 selected_feature = st.sidebar.selectbox('Kies een eigenschap', sorted(list(FEATURE_GRAPH_MAP.keys())))
 
@@ -92,6 +100,6 @@ fig = px.histogram(
     histnorm='percent', 
     **FEATURE_GRAPH_MAP[selected_feature]
 )
-st.plotly_chart(fig)
+st.plotly_chart(fig, use_container_width=True)
 
 

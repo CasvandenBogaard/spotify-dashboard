@@ -10,8 +10,14 @@ NAME_MAP = {
     '31hbrww3peprl3puzzaqqf6yfycy': 'Cas',
     'carmenvs': 'Carmen',
     '11140450740': 'Bryan',
-
+    'hankmoody420': 'Han'
 }
+
+def map_user_names(name):
+    if name in NAME_MAP:
+        return NAME_MAP[name]
+    else:
+        return name
 
 FEATURE_GRAPH_MAP = {
     'duur' : {
@@ -117,12 +123,12 @@ METRIC_MAP = {
 }
 
 df = pd.read_csv('data/tracks.csv')
-df['user'] = df['user'].map(NAME_MAP)
+df['user'] = df['user'].map(map_user_names)
 df['duration_min'] = df['duration'].apply(lambda x: x / 60)
 df['artists'] = df['artists'].apply(lambda x: [a.strip() for a in x[1:-1].replace("'", '').replace('"', '').split(',')])
 
 
-st.title('🦄🏄‍♂️Unicornication 2022🏄‍♀️🦄')
+st.title('🏄‍♂️ Unicornication 2022 🏄‍♀️')
 st.sidebar.image('unicorn.png')
 
 N_COLS = 3
@@ -140,7 +146,7 @@ fig = px.histogram(
     histnorm='percent', 
     **FEATURE_GRAPH_MAP[selected_feature_name]
 )
-cols[-1].plotly_chart(fig)
+cols[-1].plotly_chart(fig, use_container_width=True)
 
 
 for i, (metric_name, metric) in enumerate(METRIC_MAP.items()):
