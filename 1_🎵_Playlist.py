@@ -3,23 +3,6 @@ import pandas as pd
 import plotly.express as px
 
 
-def get_ranking(df, property):
-    grouped = df.groupby('user')[property].mean().sort_values(ascending=False)
-    return grouped.index.tolist(), grouped.values.tolist()
-
-
-def show_award(col, property=None, title="Award", reverse=False):
-    ranking, vals = get_ranking(df, property)
-    if reverse:
-        ranking = ranking[::-1]
-        vals = vals[::-1]
-    
-    col.markdown(
-        "\n#### {} \n\n🥇 **{}** \n\n🥈 **{}** \n\n🥉 **{}**\n\n\n  &nbsp;".format(title, *ranking[:3])
-    )
-
-
-
 NAME_MAP = {
     'rauwedouwe': 'Douwe',
     '1pat8ir5aqzhzvs7ygs1jp8ga': 'Marcel',
@@ -27,7 +10,7 @@ NAME_MAP = {
     '31hbrww3peprl3puzzaqqf6yfycy': 'Cas',
     'carmenvs': 'Carmen',
     '11140450740': 'Bryan',
-
+    'hankmoody420': 'Han'
 }
 def map_user_names(name):
     if name in NAME_MAP:
@@ -102,23 +85,6 @@ st.set_page_config(page_title='🎵 Playlist', layout='wide')
 st.title('🏄‍♂️ Unicornication 2022 🏄‍♀️')
 
 
-awards = [
-    {'property': 'popularity', 'title': '🧔 Hipster award 🧔', 'reverse': True},
-    {'property': 'duration_min', 'title': '🏃 Marathon award 🏃', 'reverse': False},
-    {'property': 'tempo', 'title': '🏎️ Speedcore award 🏎️', 'reverse': False},
-    {'property': 'dancability', 'title': "💃 I'm a dancer award 💃", 'reverse': False},
-    {'property': 'valence', 'title': '🧛 Emo award 🧛', 'reverse': True},
-    {'property': 'energy', 'title': '🔌 Red Bull award 🔌', 'reverse': False},
-    {'property': 'instrumentalness', 'title': '🎤 Karaoke award 🎤', 'reverse': True},
-    {'property': 'liveness', 'title': '🎪 Festival award 🎪', 'reverse': False},
-    {'property': 'loudness', 'title': '📢 Volume award 📢', 'reverse': False},
-]
-
-award_cols = st.columns(3)
-for i, award in enumerate(awards):
-    show_award(award_cols[i%len(award_cols)], **award)
-
-
 st.sidebar.image('unicorn.png')
 selected_user = st.sidebar.multiselect('Selecteer gebruiker', df['user'].unique(), default=df['user'].unique())
 selected_feature = st.sidebar.selectbox('Kies een eigenschap', sorted(list(FEATURE_GRAPH_MAP.keys())))
@@ -134,6 +100,6 @@ fig = px.histogram(
     histnorm='percent', 
     **FEATURE_GRAPH_MAP[selected_feature]
 )
-st.plotly_chart(fig)
+st.plotly_chart(fig, use_container_width=True)
 
 

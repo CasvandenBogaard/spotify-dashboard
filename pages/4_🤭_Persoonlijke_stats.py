@@ -10,7 +10,7 @@ NAME_MAP = {
     '31hbrww3peprl3puzzaqqf6yfycy': 'Cas',
     'carmenvs': 'Carmen',
     '11140450740': 'Bryan',
-
+    'hankmoody420': 'Han'
 }
 
 def map_user_names(name):
@@ -146,7 +146,7 @@ fig = px.histogram(
     histnorm='percent', 
     **FEATURE_GRAPH_MAP[selected_feature_name]
 )
-cols[-1].plotly_chart(fig)
+cols[-1].plotly_chart(fig, use_container_width=True)
 
 
 for i, (metric_name, metric) in enumerate(METRIC_MAP.items()):
