@@ -12,16 +12,21 @@ NAME_MAP = {
     '11140450740': 'Bryan',
 
 }
+def map_user_names(name):
+    if name in NAME_MAP:
+        return NAME_MAP[name]
+    else:
+        return name
 
 df = pd.read_csv('data/tracks.csv')
-df['user'] = df['user'].map(NAME_MAP)
+df['user'] = df['user'].map(map_user_names)
 df['duration_min'] = df['duration'].apply(lambda x: x / 60)
 df['artists'] = df['artists'].apply(lambda x: [a.strip() for a in x[1:-1].replace("'", '').replace('"', '').split(',')])
 
 group_by_user = df.groupby('user')
 artist_df = df.explode('artists')
 
-st.title('🦄🏄‍♂️Unicornication 2022🏄‍♀️🦄')
+st.title('🏄‍♂️ Unicornication 2022 🏄‍♀️')
 st.sidebar.image('unicorn.png')
 
 

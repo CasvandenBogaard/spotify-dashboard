@@ -13,6 +13,12 @@ NAME_MAP = {
 
 }
 
+def map_user_names(name):
+    if name in NAME_MAP:
+        return NAME_MAP[name]
+    else:
+        return name
+
 FEATURE_GRAPH_MAP = {
     'duur' : {
         'x': 'duration_min',
@@ -117,12 +123,12 @@ METRIC_MAP = {
 }
 
 df = pd.read_csv('data/tracks.csv')
-df['user'] = df['user'].map(NAME_MAP)
+df['user'] = df['user'].map(map_user_names)
 df['duration_min'] = df['duration'].apply(lambda x: x / 60)
 df['artists'] = df['artists'].apply(lambda x: [a.strip() for a in x[1:-1].replace("'", '').replace('"', '').split(',')])
 
 
-st.title('🦄🏄‍♂️Unicornication 2022🏄‍♀️🦄')
+st.title('🏄‍♂️ Unicornication 2022 🏄‍♀️')
 st.sidebar.image('unicorn.png')
 
 N_COLS = 3
